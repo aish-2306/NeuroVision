@@ -1,12 +1,54 @@
-NeuroVision: Generative Predictive Coding for Autonomous Drone Navigation1. Project OverviewNeuroVision is an advanced, bio-inspired generative inference engine designed to minimize the "Detection-Response Gap" in autonomous drone navigation. Unlike traditional discriminative pipelines (like YOLO/SSD) that react to sensory input, NeuroVision utilizes a Predictive Coding (PC) architecture to proactively "dream" environmental states. By implementing a novel T+10 Recursive Leap-Frog Extrapolation, the system compensates for CPU hardware latency, allowing the drone to anticipate obstacles 333ms into the future.2. Key FeaturesAnticipatory Awareness: Bypasses computational bottlenecks by projecting a "Future Ghost" tensor, enabling proactive maneuverability.Unsupervised Anomaly Detection: Learns from raw environmental context without needing labeled bounding boxes.Dual-Metric Surprise Quantification: Employs a weighted combination of Mean Squared Error (MSE) and Structural Similarity Index (SSIM) to distinguish between benign camera noise and structural obstacles.Edge-Ready Architecture: Designed for standard CPU-based execution via recursive optimization.3. Technical StackCategoryTechnologyDeep LearningPyTorch, PredNet (ConvLSTM)Vision/ProcessingOpenCV (cv2)DiagnosticsScikit-Learn, MatplotlibData LoggingCSV, Pandas/Datetime4. PrerequisitesEnsure you have the following installed on your machine:Python 3.8+GitCUDA/PyTorch (Recommended, though project supports CPU-only inference)5. Local Setup InstructionsStep 1: Clone the RepositoryBashgit clone https://github.com/your-username/NeuroVision.git
-cd NeuroVision
-Step 2: Configure EnvironmentIt is highly recommended to use a virtual environment to manage dependencies.Bash# Create environment
-python -m venv venv
+# NeuroVision: Generative Predictive Coding for Autonomous Drone Navigation
 
-# Activate (Windows)
-venv\Scripts\activate
-# Activate (Mac/Linux)
-source venv/bin/activate
-Step 3: Install DependenciesBashpip install -r requirements.txt
-(If you do not have a requirements.txt, ensure you have: torch, opencv-python, scikit-image, scikit-learn, matplotlib, numpy)Step 4: Model WeightsTo run the generative inference, you must place your pre-trained model file in the weights directory:Create the folder: mkdir weightsPlace your kitti_model.pth file inside the ./weights/ folder.6. Running the ProjectOnce the environment is configured and weights are in place, start the vision pipeline:Bashpython navigator.py
-Controls: * The system will open a diagnostics window (close it to proceed to live feed).Press 'q' to stop the live drone feed and save the research telemetry to drone_research_data.csv.7. Results & AnalysisThe project logs live telemetry to drone_research_data.csv. You can analyze the results by plotting the MSE against the Timestamp column to visualize the "Surprise Spikes" during anomaly events.8. License & CitationsThis project utilizes the PredNet architecture. Please cite the original PredNet paper if using this for research:Lotter, W., Kreiman, G., & Cox, D. (2016). Deep predictive coding networks for video prediction and unsupervised learning.
+NeuroVision is a research-grade, bio-inspired generative inference engine designed to minimize the Detection-Response Gap in autonomous drone navigation. Unlike traditional discriminative pipelines (such as YOLO or SSD) that react to sensory input, NeuroVision utilizes a Predictive Coding (PC) architecture to proactively "dream" environmental states. By implementing a novel T+10 Recursive Leap-Frog Extrapolation, the system compensates for CPU hardware latency, allowing the drone to anticipate environmental changes approximately 333 milliseconds into the future.
+
+This project bridges the gap between biological predictive processing and robotics by treating the drone as an active inference engine. The core objective is to minimize "Surprise" (prediction error) between top-down visual hypotheses and bottom-up sensory input, enabling faster and more intelligent navigation decisions.
+
+NeuroVision introduces anticipatory awareness by projecting a "Future Ghost" tensor, which enables proactive maneuverability and reduces dependency on real-time computation speed. The system performs unsupervised anomaly detection by learning directly from raw environmental context, eliminating the need for labeled bounding boxes. It also employs a dual-metric surprise quantification approach using a weighted combination of Mean Squared Error (MSE) and Structural Similarity Index (SSIM) to differentiate between normal motion and structural anomalies. The entire architecture is optimized for edge environments and is capable of running efficiently on standard CPU hardware using recursive temporal extrapolation techniques.
+
+The system is built using a modern deep learning and computer vision stack. PyTorch is used for implementing neural architectures, specifically PredNet based on ConvLSTM for predictive coding. OpenCV (cv2) is used for real-time vision processing and frame handling. Scikit-Learn and Matplotlib are used for diagnostics and visualization, including confusion matrix generation. Data logging is handled using CSV, Datetime, and Python Collections for structured telemetry storage.
+
+To set up the project, first clone the repository using:
+git clone https://github.com/your-username/NeuroVision.git  
+cd NeuroVision  
+
+Next, create and activate a virtual environment:
+python -m venv venv  
+
+On Windows:
+venv\Scripts\activate  
+
+On Mac/Linux:
+source venv/bin/activate  
+
+Install dependencies using:
+pip install -r requirements.txt  
+
+To run the system, execute:
+python navigator.py  
+
+Upon execution, the system initially displays a confusion matrix plot representing baseline validation metrics. Closing this window initializes the live drone vision pipeline. The system then launches three real-time visualization windows: one showing the current drone camera feed (Drone Reality), another displaying the predicted future frame (AI Future Sight using T+10 projection), and a third showing the anomaly heatmap (Surprise Map). These outputs allow the operator to understand both present and anticipated environmental states.
+
+The system can be stopped by pressing the 'q' key, after which it safely releases the camera resources and writes all collected telemetry data to a file named drone_research_data.csv for further analysis.
+
+The project is organized as follows:
+
+NeuroVision/  
+├── weights/              # Pre-trained model weights (.pth files)  
+├── pytorch-prednet/      # Core PredNet architecture implementation  
+├── data_utils.py         # Data preprocessing utilities  
+├── navigator.py          # Main execution script  
+├── requirements.txt      # Dependency list  
+├── .gitignore            # Git exclusion rules  
+├── License.txt           # License details  
+└── README.md             # Project documentation  
+
+If you are using this framework for research or academic purposes, please cite the foundational work on predictive coding networks:
+
+Lotter, W., Kreiman, G., & Cox, D. (2016).  
+Deep Predictive Coding Networks for Video Prediction and Unsupervised Learning.  
+arXiv:1605.08104  
+
+This project is licensed under the MIT License. Refer to the License.txt file for detailed terms and conditions.
+
+NeuroVision fundamentally shifts autonomous navigation from reactive perception to predictive intelligence, allowing drones to anticipate and respond to environmental changes before they fully occur.
